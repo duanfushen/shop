@@ -238,12 +238,14 @@ CREATE TABLE `user` (
 --
 -- Indexes for table `activity`
 --
+-- 修改表`activity`添加外键`activityId`
 ALTER TABLE `activity`
   ADD PRIMARY KEY (`activityId`);
 
 --
 -- Indexes for table `address`
 --
+-- 修改表`address`，添加外键和主键`addressID`；添加索引addressID和userId
 ALTER TABLE `address`
   ADD PRIMARY KEY (`addressID`),
   ADD KEY `addressID` (`addressID`),
@@ -252,26 +254,29 @@ ALTER TABLE `address`
 --
 -- Indexes for table `admin`
 --
+-- 添加`admin`主键`adminId`
 ALTER TABLE `admin`
   ADD PRIMARY KEY (`adminId`);
 
 --
 -- Indexes for table `category`
 --
+-- 添加`category`主键`cateId`
 ALTER TABLE `category`
   ADD PRIMARY KEY (`cateId`);
 
 --
 -- Indexes for table `chat`
 --
+-- 添加`chat`的主键`chatId`，添加索引sendUser\receiveUser
 ALTER TABLE `chat`
   ADD PRIMARY KEY (`chatId`),
   ADD KEY `sendUser` (`sendUser`),
   ADD KEY `receiveUser` (`receiveUser`);
 
---
 -- Indexes for table `collection`
 --
+-- 添加`collection`的主键`userId`,`goodsId`；添加索引`goodsId`
 ALTER TABLE `collection`
   ADD PRIMARY KEY (`userId`,`goodsId`),
   ADD KEY `collection_ibfk_2` (`goodsId`);
@@ -279,6 +284,7 @@ ALTER TABLE `collection`
 --
 -- Indexes for table `comment`
 --
+-- 添加`comment`的主键`commentId`，添加索引`userId`和`goodsId`
 ALTER TABLE `comment`
   ADD PRIMARY KEY (`commentId`),
   ADD KEY `userId` (`userId`),
@@ -287,6 +293,7 @@ ALTER TABLE `comment`
 --
 -- Indexes for table `deliver`
 --
+-- 改变表'deliver'，添加主键deliverId,同时为其添加索引'orderId'
 ALTER TABLE `deliver`
   ADD PRIMARY KEY (`deliverId`),
   ADD KEY `orderId` (`orderId`);
@@ -294,6 +301,7 @@ ALTER TABLE `deliver`
 --
 -- Indexes for table `goods`
 --
+-- 改变表`goods`，同时为其添加主键`goodsId`,添加索引`activityId`和`category`
 ALTER TABLE `goods`
   ADD PRIMARY KEY (`goodsId`),
   ADD KEY `activityId` (`activityId`),
@@ -302,6 +310,7 @@ ALTER TABLE `goods`
 --
 -- Indexes for table `imagepath`
 --
+-- 添加主键和索引
 ALTER TABLE `imagepath`
   ADD PRIMARY KEY (`pathId`),
   ADD KEY `goodid` (`goodId`);
@@ -309,6 +318,7 @@ ALTER TABLE `imagepath`
 --
 -- Indexes for table `indent`
 --
+-- 添加主键和索引
 ALTER TABLE `indent`
   ADD PRIMARY KEY (`orderId`),
   ADD KEY `userId` (`userId`),
@@ -318,6 +328,7 @@ ALTER TABLE `indent`
 --
 -- Indexes for table `orderitem`
 --
+-- 添加主键和索引
 ALTER TABLE `orderitem`
   ADD PRIMARY KEY (`itemId`),
   ADD KEY `orderId` (`orderId`),
@@ -326,6 +337,7 @@ ALTER TABLE `orderitem`
 --
 -- Indexes for table `shopcart`
 --
+-- 添加主键和索引
 ALTER TABLE `shopcart`
   ADD PRIMARY KEY (`userId`,`goodsid`),
   ADD KEY `userId` (`userId`),
@@ -334,6 +346,7 @@ ALTER TABLE `shopcart`
 --
 -- Indexes for table `user`
 --
+-- 添加主键和索引
 ALTER TABLE `user`
   ADD PRIMARY KEY (`userId`),
   ADD KEY `userId` (`userId`);
@@ -342,19 +355,57 @@ ALTER TABLE `user`
 -- 在导出的表使用AUTO_INCREMENT
 --
 
---
+--SQL中modify和alter用法区别
+-- 1. 所属能力大小不同：
+-- modify：只能用于修改字段的属性
+
+-- 例如：把age字段变为非空（针对persons表中的age这一个字段进行修改）
+
+-- ALTER TABLE Persons
+-- MODIFY Age int NOT NULL;
+-- 1
+-- 2
+-- alter：除了修改字段属性外，还可以做增加删除操作。
+
+-- alter table  person 改变
+-- 1
+-- 2. 语法书写不同
+-- modify：修改字段名使用
+
+-- alter table 表名
+-- modify 字段名 改变
+-- 1
+-- 2
+-- alter：数据库SQL语言的修改语句，可以用来修改基本表
+
+-- alter table 表名 改变
+-- 1
+-- 3. 层级不同
+-- modify:属于alter下面的一个属性
+-- alter 包含四个属性分别为“ADD ”、“DROP ”、“CHANGE ”、“MODIFY ”
+-- 备注补充：
+-- modify能修改字段类型和约束，而change不能。
+-- change用来字段重命名，不能修改字段类型和约束；
+-- 重命名时，需给定旧的和新的列名称和列当前的类型
+
+-- alter persons change age  b int
+-- 1
+-- modify不用来字段重命名，只能修改字段类型和约束；
 -- 使用表AUTO_INCREMENT `activity`
 --
+-- modify  需要改变的字段  改变
 ALTER TABLE `activity`
   MODIFY `activityId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- 使用表AUTO_INCREMENT `address`
 --
+-- modify `addressID`[字段]  `改变字段`
 ALTER TABLE `address`
   MODIFY `addressID` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- 使用表AUTO_INCREMENT `admin`
 --
+-- modify  [`adminId`]字段名 改变
 ALTER TABLE `admin`
   MODIFY `adminId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
@@ -365,10 +416,12 @@ ALTER TABLE `category`
 --
 -- 使用表AUTO_INCREMENT `chat`
 --
+-- modify `chatId`[字段名] 改变
 ALTER TABLE `chat`
   MODIFY `chatId` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 --
 -- 使用表AUTO_INCREMENT `comment`
+--
 --
 ALTER TABLE `comment`
   MODIFY `commentId` int(12) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
