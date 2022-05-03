@@ -3,6 +3,7 @@ package com.neu.shop.pojo;
 import java.util.ArrayList;
 import java.util.List;
 
+//活动管理
 public class ActivityExample {
     protected String orderByClause;
 
